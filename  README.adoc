@@ -1,0 +1,55 @@
+= AWS CDK demo
+
+== Domo steeps
+
+- aws-cdk-demo-simple-lambda
+- aws-cdk-demo-hello-world-http
+- aws-cdk-demo-hello-world-rest
+- todo-app-h2
+- aws-cdk-demo-st
+- aws-cdk-demo-dynamodb-todo
+- aws-cdk-demo-dynamodb-todo-jdk17
+
+== aws-cdk-demo-st
+
+[sourch,bash]
+----
+mvn io.quarkus.platform:quarkus-maven-plugin:2.10.1.Final:create \
+    -DprojectGroupId=dk.jarry.aws \
+    -DprojectArtifactId=aws-cdk-demo-st2
+    -DnoCode \
+    -Dextensions="io.quarkus:quarkus-rest-client,io.quarkus:quarkus-rest-client-jsonb"
+----
+
+== aws-cdk-demo-hello-world-http
+
+[sourch,bash]
+----
+mvn io.quarkus.platform:quarkus-maven-plugin:2.10.1.Final:create \
+    -DprojectGroupId=dk.jarry.aws \
+    -DprojectArtifactId=aws-cdk-demo-hello-world \
+    -DclassName="dk.jarry.aws.HelloResource" \
+    -Dpath="/todos" \
+    -Dextensions="quarkus-resteasy"
+----
+
+== Java 17 layer
+
+Build the java17layer layer from https://github.com/msailes/lambda-java17-layer or use the one in this project.
+
+== Tests from command line
+
+Create ToDo
+[source,bash]
+----
+curl -X POST http://localhost:8080/todos \
+	-H 'Accept: application/json' \
+	-H 'Content-Type: application/json' \
+	-d '{"subject":"Hello from Quarkus","body":"Content"}'
+----
+
+
+https://quarkus.io/
+
+https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/
+https://stackoverflow.com/questions/6356834/using-hibernate-uuidgenerator-via-annotations
