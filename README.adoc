@@ -1,6 +1,23 @@
 = AWS CDK demo
 
-== Domo steeps
+[quote, Decsription]
+----
+
+This project is created to demonstrate how-to deploy to AWS using IaC (Java and CDK).
+
+We start simpe by just deploying a simple lambda function. Going on to deploy an Quarks application with MicroProfile to get an REST endpoint.
+
+As we like to persist data in our REST endpoint we add DynamoDb. 
+
+By default AWS do not support JDK17 and we add a JDK 17 layder to be able to use JDK 17 in our application. 
+
+As we expect our application to really take of we add an ApplicationLoadBalancer in front and see how we now
+have done a "hot deployment" via the health endpoint.
+
+All code in this demo will be in Java - IaC and the application.
+----
+
+== Demo steeps
 
 - aws-cdk-demo-simple-lambda
 - aws-cdk-demo-hello-world-http
@@ -9,28 +26,144 @@
 - aws-cdk-demo-st
 - aws-cdk-demo-dynamodb-todo
 - aws-cdk-demo-dynamodb-todo-jdk17
+- aws-cdk-demo-dynamodb-todo-jdk17-sam (only on request)
 
-== aws-cdk-demo-st
+== aws-cdk-demo-simple-lambda
 
-[sourch,bash]
+[source,java]
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:2.10.1.Final:create \
-    -DprojectGroupId=dk.jarry.aws \
-    -DprojectArtifactId=aws-cdk-demo-st2
-    -DnoCode \
-    -Dextensions="io.quarkus:quarkus-rest-client,io.quarkus:quarkus-rest-client-jsonb"
+public String onEvent(Map<String, String> event) {
+    System.out.println("received: " + event);
+    return event
+    .entrySet()
+    .stream()
+    .map(e -> e.getKey() + "->" + e.getValue())
+    .collect(Collectors.joining(","));
+}
 ----
+
+GoTo folder `aws-cdk-demo-simple-lambda`
 
 == aws-cdk-demo-hello-world-http
 
 [sourch,bash]
+
+.Create the application
+
 ----
 mvn io.quarkus.platform:quarkus-maven-plugin:2.10.1.Final:create \
     -DprojectGroupId=dk.jarry.aws \
-    -DprojectArtifactId=aws-cdk-demo-hello-world \
+    -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
     -Dpath="/todos" \
     -Dextensions="quarkus-resteasy"
+----
+
+.pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-amazon-lambda-http</artifactId>
+</dependency>
+----
+
+[source,java]
+----
+@Path("/hello")
+public class HelloResource {
+
+    @Inject
+    @ConfigProperty(defaultValue = "hello, quarkus on localhost", name="message")
+    String message;
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String hello() {
+        return message;
+    }
+}
+----
+
+Add the endpoint
+
+[source,java]
+----
+var functionUrl = function.addFunctionUrl(FunctionUrlOptions.builder() 
+				    .authType(FunctionUrlAuthType.NONE).build());
+----                
+
+== aws-cdk-demo-hello-world-rest
+
+.Create the application
+
+----
+mvn io.quarkus.platform:quarkus-maven-plugin:2.10.1.Final:create \
+    -DprojectGroupId=dk.jarry.aws \
+    -DprojectArtifactId=aws-cdk-demo-hello-world-http \
+    -DclassName="dk.jarry.aws.HelloResource" \
+    -Dpath="/todos" \
+    -Dextensions="quarkus-resteasy"
+----
+
+.pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-amazon-lambda-rest</artifactId>
+</dependency>
+----
+
+[source,java]
+----
+@Path("/hello")
+public class HelloResource {
+
+    @Inject
+    @ConfigProperty(defaultValue = "hello, quarkus on localhost", name="message")
+    String message;
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String hello() {
+        return message;
+    }
+}
+----
+
+Add the endpoint
+
+[source,java]
+----
+var apiGateway = LambdaRestApi.Builder.create(this, "RestApiGateway")
+                    .handler(function).build();
+----  
+
+== todo-app-h2
+
+Introduce the ToDo Quarkus application. 
+
+Start the ToDo Quarkus application on localhost.
+
+[source,bash]
+----
+mvn compile quarkus:dev
+----
+
+
+== aws-cdk-demo-st
+
+Introduce the ToDo SystemTest.
+
+[source,bash]
+----
+mvn compile quarkus:dev
+----
+
+[source,bash]
+----
+mvn compile quarkus:dev -Dquarkus.rest-client.extensions-api.url=http://localhost:8080
 ----
 
 == Java 17 layer

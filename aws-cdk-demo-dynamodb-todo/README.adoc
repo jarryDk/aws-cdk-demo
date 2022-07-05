@@ -24,11 +24,10 @@ https://docs.aws.amazon.com/cdk/api/v2/java/software/amazon/awscdk/services/dyna
 
 == Run DynamoDB via podman
 ----
-podman run -it --rm=true \
-	--name DynamoDB \
-	-p 8000:8000 \
-	amazon/dynamodb-local:1.18.0 \
-	-jar DynamoDBLocal.jar -inMemory -sharedDb
+podman run -it \
+    --publish 8000:8000 \
+    amazon/dynamodb-local:1.11.477 \
+    -jar DynamoDBLocal.jar -inMemory -sharedDb
 ----
 
 == Create table in DynamoDB

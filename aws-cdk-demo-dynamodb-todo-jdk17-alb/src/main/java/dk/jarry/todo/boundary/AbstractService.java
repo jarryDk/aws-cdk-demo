@@ -8,20 +8,19 @@ import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import dk.jarry.todo.entity.ToDo;
-import software.amazon.awssdk.services.dynamodb.model.AttributeAction;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate;
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.ReturnValue;
 import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
 import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
 
 public abstract class AbstractService {
 
 	@Inject
-	@ConfigProperty(defaultValue = "todo-app-todos", name = "dynamoDbTableName")
-	private String dynamoDbTableName;
+	@ConfigProperty(defaultValue = "todos", name = "dynamoDbTableName")
+	String dynamoDbTableName;
 
 	public final static String TODO_UUID_COL = "uuid";
 	public final static String TODO_SUBJECT_COL = "subject";
@@ -86,25 +85,25 @@ public abstract class AbstractService {
 		Map<String, AttributeValue> key = new HashMap<>();
 		key.put(TODO_UUID_COL, AttributeValue.builder().s(uuid).build());
 
-		Map<String, AttributeValueUpdate> updatedValues = new HashMap<>();
-		updatedValues.put(TODO_SUBJECT_COL, //
-				AttributeValueUpdate.builder().value(AttributeValue.builder().s(toDo.getSubject()).build())
-						.action(AttributeAction.PUT).build());
-		updatedValues.put(TODO_BODY_COL, //
-				AttributeValueUpdate.builder().value(AttributeValue.builder().s(toDo.getBody()).build())
-						.action(AttributeAction.PUT).build());
+		Map<String, AttributeValue> items = new HashMap<>();
+		items.put(":" + TODO_SUBJECT_COL, AttributeValue.builder().s(toDo.getSubject()).build());
+		items.put(":" + TODO_BODY_COL, AttributeValue.builder().s(toDo.getBody()).build());
+
+		String updateExpression = "SET " + //
+				TODO_SUBJECT_COL + " = :" + TODO_SUBJECT_COL + ", " + //
+				TODO_BODY_COL + " = :" + TODO_BODY_COL;
 
 		return UpdateItemRequest.builder() //
 				.tableName(getTableName()) //
 				.key(key) //
-				.attributeUpdates(updatedValues) //
-				.build();
+				.returnValues(ReturnValue.ALL_NEW) //
+				.updateExpression(updateExpression) //
+				.expressionAttributeValues(items).build();
 	}
 
 	protected DeleteItemRequest getDeleteItemRequest(String uuid) {
 
 		Map<String, AttributeValue> key = new HashMap<>();
-
 		key.put(TODO_UUID_COL, AttributeValue.builder().s(uuid).build());
 
 		return DeleteItemRequest.builder() //

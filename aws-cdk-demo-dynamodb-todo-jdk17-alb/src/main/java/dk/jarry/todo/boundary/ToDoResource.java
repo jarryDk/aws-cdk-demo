@@ -1,6 +1,7 @@
 package dk.jarry.todo.boundary;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -13,21 +14,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import dk.jarry.todo.entity.ToDo;
 
-
 @Path("/todos")
 public class ToDoResource {
-
-	@Inject
-	@ConfigProperty(defaultValue = "localhost", name = "message")
-	private String message;
 
 	@Inject
 	ToDoService toDoService;
@@ -35,7 +31,7 @@ public class ToDoResource {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String hello() {
-		return "Hello RESTEasy from " + message;
+		return "Hello RESTEasy";
 	}
 
 	@POST
@@ -52,14 +48,31 @@ public class ToDoResource {
 	@Path("{uuid}")
 	@Operation(description = "Get a specific todo by uuid")
 	public ToDo read(@PathParam("uuid") String uuid) {
-		return toDoService.read(uuid);
+		Optional<ToDo> read = toDoService.read(uuid);				
+		return read.map(v -> {
+			return v;
+		}).orElseThrow(() -> new WebApplicationException( //
+				"ToDo with uuid of " + uuid + " does not exist.", //
+				Response.Status.NOT_FOUND));
+	}
+
+	@GET
+	@Path("/tablename")
+	@Operation(description = "Get tablename")
+	public String getTableName() {
+		return toDoService.getTableName();
 	}
 
 	@PUT
 	@Path("{uuid}")
 	@Operation(description = "Update an exiting todo")
 	public ToDo update(@PathParam("uuid") String uuid, ToDo toDo) {
-		return toDoService.update(uuid, toDo);
+		Optional<ToDo> update = toDoService.update(uuid, toDo);
+		return update.map(v -> {
+			return v;
+		}).orElseThrow(() -> new WebApplicationException( //
+				"ToDo with uuid of " + uuid + " does not exist.", //
+				Response.Status.NOT_FOUND));
 	}
 
 	@DELETE

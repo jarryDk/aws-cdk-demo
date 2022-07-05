@@ -1,11 +1,9 @@
 package dk.jarry.aws;
 
-import org.junit.jupiter.api.Test;
-
-import dk.jarry.aws.todo.control.ToDoResourceClient;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.json.Json;
@@ -13,12 +11,16 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.Test;
 
+import dk.jarry.aws.todo.control.ToDoResourceClient;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class ToDoResourceTest {
 
+	Logger LOGGER = Logger.getLogger(ToDoResourceTest.class.getName());
+	
     @Inject
     @RestClient
     ToDoResourceClient resourceClient;
@@ -32,11 +34,11 @@ public class ToDoResourceTest {
         JsonObject todoInput = createObjectBuilder.build();
         
         var todoOutput = this.resourceClient.create(todoInput);
+        
+        LOGGER.info("Create : " + todoOutput.toString());
 
         assertEquals(todoInput.getString("subject"), todoOutput.getString("subject"));
-        assertEquals(todoInput.getString("body"), todoOutput.getString("body"));
-
-        System.out.println("create - Todo " + todoOutput);
+        assertEquals(todoInput.getString("body"), todoOutput.getString("body"));        
        
     }
 
@@ -50,10 +52,12 @@ public class ToDoResourceTest {
         JsonObject todoInput = createObjectBuilder.build();        
         var todoOutput = this.resourceClient.create(todoInput);
 
+        LOGGER.info("Create : " + todoOutput.toString());
+        
         assertEquals(todoInput.getString("subject"), todoOutput.getString("subject"));
         assertEquals(todoInput.getString("body"), todoOutput.getString("body"));
 
-        System.out.println("read - Todo [1] " + todoOutput);
+        LOGGER.info("Read [1] " + todoOutput);
 
         String uuid = todoOutput.getString("uuid");
 
@@ -62,7 +66,7 @@ public class ToDoResourceTest {
         assertEquals(todoInput.getString("subject"), todoOutput.getString("subject"));
         assertEquals(todoInput.getString("body"), todoOutput.getString("body"));
 
-        System.out.println("read - Todo [2] " + todoOutput);
+        LOGGER.info("Read [2] " + todoOutput);
        
     }
 
@@ -79,20 +83,20 @@ public class ToDoResourceTest {
         assertEquals(todoInput.getString("subject"), todoOutput.getString("subject"));
         assertEquals(todoInput.getString("body"), todoOutput.getString("body"));
 
-        System.out.println("update - Todo [1] " + todoOutput);
+        LOGGER.info("Update [1] " + todoOutput);
 
         String uuid = todoOutput.getString("uuid");
 
         JsonObjectBuilder todoUpdateBuilder = Json.createObjectBuilder(todoOutput);
-        todoUpdateBuilder.add("subject", "new subject");
+        todoUpdateBuilder.add("subject", "Updated subject");
         var todoUpdated = todoUpdateBuilder.build();
          
         todoOutput = this.resourceClient.update(uuid, todoUpdated);
 
-        assertEquals(todoUpdated.getString("subject"), "new subject");
+        assertEquals(todoUpdated.getString("subject"), "Updated subject");
         assertEquals(todoInput.getString("body"), todoOutput.getString("body"));
 
-        System.out.println("update - Todo [2] " + todoOutput);
+        LOGGER.info("Update[2] " + todoOutput);
        
     }
 
@@ -109,7 +113,7 @@ public class ToDoResourceTest {
         assertEquals(todoInput.getString("subject"), todoOutput.getString("subject"));
         assertEquals(todoInput.getString("body"), todoOutput.getString("body"));
 
-        System.out.println("delete- Todo " + todoOutput);
+        LOGGER.info("Delete " + todoOutput);
 
         String uuid = todoOutput.getString("uuid");
        
