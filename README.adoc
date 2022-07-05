@@ -181,8 +181,24 @@ curl -X POST http://localhost:8080/todos \
 	-d '{"subject":"Hello from Quarkus","body":"Content"}'
 ----
 
+== CDK commands
+
+- `cdk ls` list all stacks in the app
+- `cdk synth` emits the synthesized CloudFormation template
+- `cdk deploy` deploy this stack to your default AWS account/region
+- `cdk diff` compare deployed stack with current state
+- `cdk docs` open CDK documentation
+
+== Links
 
 https://quarkus.io/
 
 https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/
 https://stackoverflow.com/questions/6356834/using-hibernate-uuidgenerator-via-annotations
+
+
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html#enable-multi-value-headers
+
+https://docs.aws.amazon.com/cdk/api/v1/java/software/amazon/awscdk/services/elasticloadbalancingv2/CfnTargetGroup.TargetGroupAttributeProperty.html
+
+https://github.com/aws-samples/aws-cdk-examples/tree/master/java

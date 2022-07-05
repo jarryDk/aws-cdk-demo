@@ -18,6 +18,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import dk.jarry.todo.entity.ToDo;
@@ -27,11 +28,15 @@ public class ToDoResource {
 
 	@Inject
 	ToDoService toDoService;
+	
+	@Inject
+    @ConfigProperty(defaultValue = "hello, quarkus on localhost", name="message")
+    String message;
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String hello() {
-		return "Hello RESTEasy";
+		return message;
 	}
 
 	@POST

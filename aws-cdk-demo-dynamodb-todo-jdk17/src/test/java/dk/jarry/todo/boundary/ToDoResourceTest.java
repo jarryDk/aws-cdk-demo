@@ -15,7 +15,7 @@ public class ToDoResourceTest {
           .when().get("/todos")
           .then()
              .statusCode(200)
-             .body(is("Hello RESTEasy"));
+             .body(is("hello, quarkus on localhost"));
     }
 
 }
