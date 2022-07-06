@@ -23,3 +23,8 @@
 hs_err_pid*
 */cdk
 */target
+*/.settings
+*/cdk/cdk.out/*
+*/.classpath
+*/.project
+cdk/cdk.out/*

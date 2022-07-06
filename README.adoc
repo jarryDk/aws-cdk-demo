@@ -18,7 +18,7 @@ All code in this demo will be in Java - IaC and the application.
 ----
 
 == Demo steeps
-
+- Introduction to AWS CDK
 - aws-cdk-demo-simple-lambda
 - aws-cdk-demo-hello-world-http
 - aws-cdk-demo-hello-world-rest
@@ -27,6 +27,41 @@ All code in this demo will be in Java - IaC and the application.
 - aws-cdk-demo-dynamodb-todo
 - aws-cdk-demo-dynamodb-todo-jdk17
 - aws-cdk-demo-dynamodb-todo-jdk17-sam (only on request)
+
+== Introduction to AWS CDK
+
+.What is
+
+[quote, Decsription]
+----
+The AWS Cloud Development Kit (AWS CDK) is an open-source software development framework to define your cloud application resources using familiar programming languages.
+----
+
+.Key concepts
+
+[quote, Decsription]
+----
+An AWS CDK app is an application written in TypeScript, JavaScript, Python, Java, C# or Go that uses the AWS CDK to define AWS infrastructure. An app defines one or more stacks. Stacks (equivalent to AWS CloudFormation stacks) contain constructs, each of which defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, Amazon DynamoDB tables, and so on.
+----
+
+.How it works
+
+image::images/cdk.png[][CDK]
+
+.Supported programming languages
+
+[quote, Decsription]
+----
+The AWS CDK has first-class support for TypeScript, JavaScript, Python, Java, C#, and Go. Other JVM and .NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time.
+----
+
+
+https://docs.aws.amazon.com/cdk/v2/guide/apps.html#lifecycle[App lifecycle]
+
+.Links
+
+- https://aws.amazon.com/cdk/[AWS Cloud Development Kit]
+- https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html[Getting started with the AWS CDK]
 
 == aws-cdk-demo-simple-lambda
 
@@ -42,7 +77,7 @@ public String onEvent(Map<String, String> event) {
 }
 ----
 
-GoTo folder `aws-cdk-demo-simple-lambda`
+Go to the folder `aws-cdk-demo-simple-lambda`
 
 == aws-cdk-demo-hello-world-http
 
@@ -154,6 +189,8 @@ mvn compile quarkus:dev
 
 == aws-cdk-demo-st
 
+TIPS: todo-app-h2 app need to be up running before going forward. 
+
 Introduce the ToDo SystemTest.
 
 [source,bash]
@@ -166,19 +203,59 @@ mvn compile quarkus:dev
 mvn compile quarkus:dev -Dquarkus.rest-client.extensions-api.url=http://localhost:8080
 ----
 
+
+== aws-cdk-demo-dynamodb-todo
+
+- Show how the app is using DynamoDB
+- Show how to create the DynamoDB database and table
+- Show how to create a Role and use it
+
+
+== aws-cdk-demo-dynamodb-todo-jdk17
+
+- Show how to add a java17 layer
+
+== aws-cdk-demo-dynamodb-todo-jdk17
+
+- Show how to setup ApplicationLoadBalancer
+- Manual enable `enable-multi-value-header``
+
+== aws-cdk-demo-dynamodb-todo-jdk17-sam (only on request)
+
+Same as `aws-cdk-demo-dynamodb-todo-jdk17` but deployed via https://aws.amazon.com/serverless/sam/[SAM].
+
 == Java 17 layer
 
 Build the java17layer layer from https://github.com/msailes/lambda-java17-layer or use the one in this project.
 
 == Tests from command line
 
-Create ToDo
+.Create a ToDo
+
 [source,bash]
 ----
 curl -X POST http://localhost:8080/todos \
 	-H 'Accept: application/json' \
 	-H 'Content-Type: application/json' \
 	-d '{"subject":"Hello from Quarkus","body":"Content"}'
+----
+
+[source,bash]
+----
+./create_todo.sh http://localhost:8080/todos
+----
+
+.Read a ToDo
+
+[source,bash]
+----
+curl http://localhost:8080/todos/db50ec51-99cf-4972-a435-50ea3701c78a
+----
+
+
+[source,bash]
+----
+./read_todo.sh http://localhost:8080/todos db50ec51-99cf-4972-a435-50ea3701c78a
 ----
 
 == CDK commands
@@ -191,14 +268,8 @@ curl -X POST http://localhost:8080/todos \
 
 == Links
 
-https://quarkus.io/
-
-https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/
-https://stackoverflow.com/questions/6356834/using-hibernate-uuidgenerator-via-annotations
-
-
-https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html#enable-multi-value-headers
-
-https://docs.aws.amazon.com/cdk/api/v1/java/software/amazon/awscdk/services/elasticloadbalancingv2/CfnTargetGroup.TargetGroupAttributeProperty.html
-
-https://github.com/aws-samples/aws-cdk-examples/tree/master/java
+- https://quarkus.io/
+- https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/
+- https://stackoverflow.com/questions/6356834/using-hibernate-uuidgenerator-via-annotations
+- https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html#enable-multi-value-headers
+- https://github.com/aws-samples/aws-cdk-examples/tree/master/java
