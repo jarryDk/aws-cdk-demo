@@ -65,6 +65,10 @@ https://docs.aws.amazon.com/cdk/v2/guide/apps.html#lifecycle[App lifecycle]
 
 == aws-cdk-demo-simple-lambda
 
+- Show the lambda funtion
+- Show the CKD code
+- Do live deployment to AWS
+
 [source,java]
 ----
 public String onEvent(Map<String, String> event) {
@@ -80,6 +84,10 @@ public String onEvent(Map<String, String> event) {
 Go to the folder `aws-cdk-demo-simple-lambda`
 
 == aws-cdk-demo-hello-world-http
+
+- Show the Quarkus app with MicroProfile
+- Show how to test the app on localhost
+- Show the CKD code (http)
 
 [sourch,bash]
 
@@ -130,6 +138,8 @@ var functionUrl = function.addFunctionUrl(FunctionUrlOptions.builder()
 
 == aws-cdk-demo-hello-world-rest
 
+- Show the CKD code (rest)
+
 .Create the application
 
 ----
@@ -177,21 +187,19 @@ var apiGateway = LambdaRestApi.Builder.create(this, "RestApiGateway")
 
 == todo-app-h2
 
-Introduce the ToDo Quarkus application. 
-
-Start the ToDo Quarkus application on localhost.
+- Introduce the ToDo Quarkus application.
+- Start the ToDo Quarkus application on localhost.
 
 [source,bash]
 ----
 mvn compile quarkus:dev
 ----
 
-
 == aws-cdk-demo-st
 
-TIPS: todo-app-h2 app need to be up running before going forward. 
+TIP: todo-app-h2 app need to be up running before going forward. 
 
-Introduce the ToDo SystemTest.
+- Introduce the ToDo SystemTest.
 
 [source,bash]
 ----
@@ -207,9 +215,37 @@ mvn compile quarkus:dev -Dquarkus.rest-client.extensions-api.url=http://localhos
 == aws-cdk-demo-dynamodb-todo
 
 - Show how the app is using DynamoDB
-- Show how to create the DynamoDB database and table
-- Show how to create a Role and use it
+- Show how to test the app on localhost
+- Show how to create the DynamoDB database and table for AWS
+- Show how to create a Role for AWS and use it
 
+.Start a DynamoDB container on "localhost"
+[source,bash]
+----
+podman run -it \
+     --publish 8000:8000 \
+     amazon/dynamodb-local:1.11.477 \
+     -jar DynamoDBLocal.jar -inMemory -sharedDb
+----
+
+Access : http://localhost:8000/shell
+
+
+.Create the table 'todos' in DynamoDB
+[source,javascript]
+----
+var params = {
+    TableName: 'ToDos',
+    KeySchema: [{ AttributeName: 'uuid', KeyType: 'HASH' }],
+    AttributeDefinitions: [{  AttributeName: 'uuid', AttributeType: 'S', }],
+    ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
+};
+dynamodb.createTable(params, function(err, data) {
+    if (err) ppJson(err);
+    else ppJson(data);
+
+});
+----
 
 == aws-cdk-demo-dynamodb-todo-jdk17
 
