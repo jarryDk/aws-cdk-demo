@@ -320,6 +320,7 @@ curl http://localhost:8080/todos/db50ec51-99cf-4972-a435-50ea3701c78a
 - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html#enable-multi-value-headers
 - https://github.com/aws-samples/aws-cdk-examples/tree/master/java
 - https://docs.aws.amazon.com/cdk/api/v2/java/software/amazon/awscdk/services/lambda/CfnLayerVersion.html
+- https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html
 
 - https://quarkus.io/
 - https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/

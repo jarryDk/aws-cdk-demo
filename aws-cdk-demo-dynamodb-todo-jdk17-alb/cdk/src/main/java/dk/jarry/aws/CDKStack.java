@@ -91,7 +91,7 @@ public class CDKStack extends Stack {
 				.value(loadBalancerDNSName).build();
 		CfnOutput.Builder.create(this, "LoadBalancerCurlOutput") //
 				.value("curl -i http://" + loadBalancerDNSName + "/todos").build();
-		CfnOutput.Builder.create(this, "LoadBalancerTestOutput").value("../create_todo.sh " + url + "/todos").build();
+		CfnOutput.Builder.create(this, "LoadBalancerTestOutput").value("../create_todo.sh http://" + loadBalancerDNSName + "/todos").build();
 		CfnOutput.Builder.create(this, "LoadBalancerSTOutput")
 				.value("mvn compile quarkus:dev -Dquarkus.rest-client.extensions-api.url=http://" + loadBalancerDNSName)
 				.build();
@@ -99,10 +99,13 @@ public class CDKStack extends Stack {
 
 	ITable findOrCreateTable(String id, String tableName) {
 
+		ITable table = null;
+		/*
 		ITable table = Table.fromTableName(this, id + "-table", "aws-cdk-demo-todos");
 		if (table != null) {
 			return table;
 		}
+ 		*/
 
 		table = Table.Builder.create(this, "todos-in-stack") //
 				.tableName(tableName) //
@@ -117,10 +120,12 @@ public class CDKStack extends Stack {
 
 	IRole findOrCreateRole(String id, String roleName) {
 
+		/*
 		IRole fromRoleName = Role.fromRoleName(this, id + "-role", "aws-cdk-demo-todo-role");
 		if (fromRoleName != null) {
 			return fromRoleName;
 		}
+ 		*/
 
 		Role lambdaRole = Role.Builder.create(this, "ToDo-Lambda-Role") //
 				.assumedBy(new ServicePrincipal("lambda.amazonaws.com")) //
@@ -174,7 +179,8 @@ public class CDKStack extends Stack {
 		Vpc vpc = Vpc.Builder.create(this, "VPC")//
 				.cidr("10.0.0.0/16")//
 				.enableDnsHostnames(true)//
-				.enableDnsSupport(true).natGateways(0) //
+				.enableDnsSupport(true) //
+				.natGateways(0) //
 				.maxAzs(2) //
 				.build();
 		return vpc;
