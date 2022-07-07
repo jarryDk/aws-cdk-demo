@@ -24,6 +24,7 @@ All code in this demo will be in Java - IaC and the application.
 - aws-cdk-demo-hello-world-rest
 - todo-app-h2
 - aws-cdk-demo-st
+- aws-cdk-demo
 - aws-cdk-demo-dynamodb-todo
 - aws-cdk-demo-dynamodb-todo-jdk17
 - aws-cdk-demo-dynamodb-todo-jdk17-sam (only on request)
@@ -211,6 +212,15 @@ mvn compile quarkus:dev
 mvn compile quarkus:dev -Dquarkus.rest-client.extensions-api.url=http://localhost:8080
 ----
 
+== aws-cdk-demo
+
+TIP: Upload the java17layer.zip to the bucket `aws-cdk-demo-lamda-layers` manuel
+
+- Show how to create a DynamoDB table
+- Show how to create a Role
+- Show how to create a Bucket
+- Show how to create a Layer
+
 
 == aws-cdk-demo-dynamodb-todo
 
@@ -304,8 +314,13 @@ curl http://localhost:8080/todos/db50ec51-99cf-4972-a435-50ea3701c78a
 
 == Links
 
+- https://docs.aws.amazon.com/cdk/api/v2/java/index.html
+- https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html
+- https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html#enable-multi-value-headers
+- https://github.com/aws-samples/aws-cdk-examples/tree/master/java
+- https://docs.aws.amazon.com/cdk/api/v2/java/software/amazon/awscdk/services/lambda/CfnLayerVersion.html
+
 - https://quarkus.io/
 - https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/
 - https://stackoverflow.com/questions/6356834/using-hibernate-uuidgenerator-via-annotations
-- https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html#enable-multi-value-headers
-- https://github.com/aws-samples/aws-cdk-examples/tree/master/java
+
