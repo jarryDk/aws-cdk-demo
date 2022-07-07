@@ -214,7 +214,8 @@ mvn compile quarkus:dev -Dquarkus.rest-client.extensions-api.url=http://localhos
 
 == aws-cdk-demo
 
-TIP: Upload the java17layer.zip to the bucket `aws-cdk-demo-lamda-layers` manuel
+TIP: Upload the java17layer.zip to the bucket `aws-cdk-demo-lamda-layers` with the script `s3_upload_java17layser_to_aws-cdk-demo-lamda-layers.sh` bofore creating the layer.
+
 
 - Show how to create a DynamoDB table
 - Show how to create a Role
