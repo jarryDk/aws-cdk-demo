@@ -1,0 +1,50 @@
+= todo-app-postgres
+
+== pom.xml
+
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-hibernate-orm</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-jdbc-postgresql</artifactId>
+</dependency>
+----
+
+== application.properties (postgresql)
+
+----
+quarkus.datasource.db-kind=postgresql
+quarkus.datasource.jdbc.url=jdbc:postgresql://PostgresQuarkusWorkshop:5432/hibernate_db
+quarkus.datasource.jdbc.driver=org.postgresql.Driver
+quarkus.datasource.username=hibernate
+quarkus.datasource.password=hibernate
+quarkus.datasource.jdbc.max-size=8
+quarkus.datasource.jdbc.min-size=2
+
+quarkus.hibernate-orm.database.generation=update
+# quarkus.hibernate-orm.database.generation=drop-and-create
+----
+
+
+== Start Postgres
+
+TIP: Update your host file ... add to /etc/hosts `127.0.0.1 PostgresQuarkusWorkshop``
+
+[source,bash]
+----
+podman run -it --rm=true \
+  --name PostgresQuarkusWorkshop \
+  -e POSTGRES_USER=hibernate \
+  -e POSTGRES_PASSWORD=hibernate \
+  -e POSTGRES_DB=hibernate_db \
+  -p 5432:5432 \
+  postgres:14.2
+----
+
+== Links
+
+https://quarkus.io/guides/hibernate-orm[Quarkus - Using Hibernate ORM and JPA]

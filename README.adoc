@@ -95,7 +95,7 @@ Go to the folder `aws-cdk-demo-simple-lambda`
 .Create the application
 
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:2.10.1.Final:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
@@ -144,7 +144,7 @@ var functionUrl = function.addFunctionUrl(FunctionUrlOptions.builder()
 .Create the application
 
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:2.10.1.Final:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
