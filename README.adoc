@@ -9,15 +9,15 @@ We start simpe by just deploying a simple lambda function. Going on to deploy an
 
 As we like to persist data in our REST endpoint we add DynamoDb. 
 
-By default AWS do not support JDK17 and we add a JDK 17 layder to be able to use JDK 17 in our application. 
+By default AWS do not support JDK 17 and we add a JDK 17 layer to be able to use JDK 17 in our application. 
 
-As we expect our application to really take of we add an ApplicationLoadBalancer in front and see how we now
-have done a "hot deployment" via the health endpoint.
+As we expect our application to really take of we add an ApplicationLoadBalancer in front and see how we now have done a "hot deployment" via the health endpoint.
 
 All code in this demo will be in Java - IaC and the application.
 ----
 
 == Demo steeps
+
 - Introduction to AWS CDK
 - aws-cdk-demo-simple-lambda
 - aws-cdk-demo-hello-world-http
@@ -57,32 +57,32 @@ The AWS CDK has first-class support for TypeScript, JavaScript, Python, Java, C#
 ----
 
 
-https://docs.aws.amazon.com/cdk/v2/guide/apps.html#lifecycle[App lifecycle]
+https://docs.aws.amazon.com/cdk/v2/guide/apps.html#lifecycle[Apps -> App lifecycle]
 
 .Links
 
 - https://aws.amazon.com/cdk/[AWS Cloud Development Kit]
 - https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html[Getting started with the AWS CDK]
+- https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-java.html[Working with the AWS CDK in Java]
 
 == aws-cdk-demo-simple-lambda
 
 - Show the lambda funtion
-- Show the CKD code
+- Show the CKD code (including cdk.json)
 - Do live deployment to AWS
+- Use/Test lambda funtion
 
 [source,java]
 ----
 public String onEvent(Map<String, String> event) {
     System.out.println("received: " + event);
     return event
-    .entrySet()
-    .stream()
-    .map(e -> e.getKey() + "->" + e.getValue())
-    .collect(Collectors.joining(","));
+       .entrySet()
+       .stream()
+       .map(e -> e.getKey() + "->" + e.getValue())
+       .collect(Collectors.joining(","));
 }
 ----
-
-Go to the folder `aws-cdk-demo-simple-lambda`
 
 == aws-cdk-demo-hello-world-http
 
@@ -99,7 +99,7 @@ mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
-    -Dpath="/todos" \
+    -Dpath="/hello" \
     -Dextensions="quarkus-resteasy"
 ----
 
@@ -112,6 +112,8 @@ mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
 </dependency>
 ----
 
+.Rest endpoint
+
 [source,java]
 ----
 @Path("/hello")
@@ -129,13 +131,29 @@ public class HelloResource {
 }
 ----
 
-Add the endpoint
+
+.Local demo
+
+http://localhost:8080/hello
+
+Expected output : `hello, quarkus on localhost`
+
+.Add the endpoint via CDK
 
 [source,java]
 ----
-var functionUrl = function.addFunctionUrl(FunctionUrlOptions.builder() 
-				    .authType(FunctionUrlAuthType.NONE).build());
-----                
+var functionUrl = function.addFunctionUrl(
+    FunctionUrlOptions
+        .builder()
+        .authType(FunctionUrlAuthType.NONE)
+        .build());
+----
+
+.AWS demo
+
+http://<HOST_NAME>/hello
+
+Expected output : `Hello World - Quarkus as AWS Lambda`
 
 == aws-cdk-demo-hello-world-rest
 
@@ -148,7 +166,7 @@ mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
-    -Dpath="/todos" \
+    -Dpath="/hello" \
     -Dextensions="quarkus-resteasy"
 ----
 
@@ -160,6 +178,8 @@ mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
     <artifactId>quarkus-amazon-lambda-rest</artifactId>
 </dependency>
 ----
+
+.Rest endpoint
 
 [source,java]
 ----
@@ -178,18 +198,22 @@ public class HelloResource {
 }
 ----
 
-Add the endpoint
+.Add the endpoint
 
 [source,java]
 ----
-var apiGateway = LambdaRestApi.Builder.create(this, "RestApiGateway")
-                    .handler(function).build();
+var apiGateway = LambdaRestApi.Builder
+                    .create(this, "RestApiGateway")
+                    .handler(function)
+                    .build();
 ----  
 
 == todo-app-h2
 
 - Introduce the ToDo Quarkus application.
 - Start the ToDo Quarkus application on localhost.
+
+.Start app in dev mode
 
 [source,bash]
 ----
@@ -202,10 +226,14 @@ TIP: todo-app-h2 app need to be up running before going forward.
 
 - Introduce the ToDo SystemTest.
 
+.Start app in dev mode
+
 [source,bash]
 ----
 mvn compile quarkus:dev
 ----
+
+.Start app in dev mode - change endpoint
 
 [source,bash]
 ----
@@ -214,13 +242,15 @@ mvn compile quarkus:dev -Dquarkus.rest-client.extensions-api.url=http://localhos
 
 == aws-cdk-demo
 
-TIP: Upload the java17layer.zip to the bucket `aws-cdk-demo-lamda-layers` with the script `s3_upload_java17layser_to_aws-cdk-demo-lamda-layers.sh` bofore creating the layer.
+TIP: Upload the java17layer.zip to the bucket `aws-cdk-demo-lamda-layers` with the script `s3_upload_java17layers_to_aws-cdk-demo-lamda-layers.sh` before creating the layer.
 
 
-- Show how to create a DynamoDB table
-- Show how to create a Role
-- Show how to create a Bucket
-- Show how to create a Layer
+- Show how to create a DynamoDB table (L1)
+- Show how to create a Role (L2)
+- Show how to create a Bucket (L1)
+- Show how to create a Layer (L1)
+
+https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_concepts[Getting started with the AWS CDK -> Key concepts]
 
 
 == aws-cdk-demo-dynamodb-todo
@@ -265,7 +295,7 @@ dynamodb.createTable(params, function(err, data) {
 == aws-cdk-demo-dynamodb-todo-jdk17
 
 - Show how to setup ApplicationLoadBalancer
-- Manual enable `enable-multi-value-header``
+- Manual enable `enable-multi-value-header`
 
 == aws-cdk-demo-dynamodb-todo-jdk17-sam (only on request)
 

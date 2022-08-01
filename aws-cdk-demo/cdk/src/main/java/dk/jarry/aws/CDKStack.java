@@ -53,7 +53,7 @@ public class CDKStack extends Stack {
 	public CDKStack(final Construct scope, final String id, final StackProps props) {
 		super(scope, id, props);
 
-		CfnTable table = createTable(id);
+		CfnTable table = createCfnTable(id);
 		Tags.of(table).add("environment", "demo");
 
 		IRole lambdaRole = createRole(id);
@@ -71,7 +71,7 @@ public class CDKStack extends Stack {
 
 	}
 
-	CfnTable createTable(String id) {
+	CfnTable createCfnTable(String id) {
 
 		String tableName = id + "-todos";
 
