@@ -1,5 +1,6 @@
 = AWS CDK demo
 
+.Project introduction
 ****
 This project is created to demonstrate how-to deploy to AWS using IaC (Java and CDK).
 
@@ -41,15 +42,15 @@ The AWS Cloud Development Kit (AWS CDK) is an open-source software development f
 An AWS CDK app is an application written in TypeScript, JavaScript, Python, Java, C# or Go that uses the AWS CDK to define AWS infrastructure. An app defines one or more stacks. Stacks (equivalent to AWS CloudFormation stacks) contain constructs, each of which defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, Amazon DynamoDB tables, and so on.
 ****
 
-.How it works
-
-image::images/cdk.png[][CDK]
-
 .Supported programming languages
 
 ****
 The AWS CDK has first-class support for TypeScript, JavaScript, Python, Java, C#, and Go. Other JVM and .NET CLR languages may also be used, at least in theory, but we are unable to offer support for them at this time.
 ****
+
+.How it works
+
+image::images/cdk.png[][CDK]
 
 
 https://docs.aws.amazon.com/cdk/v2/guide/apps.html#lifecycle[Apps -> App lifecycle]
