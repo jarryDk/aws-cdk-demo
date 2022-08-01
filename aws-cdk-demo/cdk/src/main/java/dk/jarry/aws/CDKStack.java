@@ -62,8 +62,15 @@ public class CDKStack extends Stack {
 		var createBucketDeployment = createCfnBucket();
 		Tags.of(createBucketDeployment).add("environment", "demo");
 
-		// CfnLayerVersion cfnLayerVersion = createCfnLayerVersion();
-		// Tags.of(cfnLayerVersion).add("environment", "demo");
+		/**
+		 * We only like to do the layer deployment if we have java17layer.zip in the 
+		 * bucket aws-cdk-demo-lamda-layers
+		 */
+		boolean doLayerDeployment = Boolean.parseBoolean(System.getenv("DO_LAYER_DEPLOYMENT"));
+		if (doLayerDeployment) {
+			CfnLayerVersion cfnLayerVersion = createCfnLayerVersion();
+			Tags.of(cfnLayerVersion).add("environment", "demo");
+		}
 
 		IFunction function = createFunction(functionName, lambdaHandler, configuration, memory, maxConcurrency, timeout,
 				lambdaRole);
