@@ -339,6 +339,29 @@ curl http://localhost:8080/todos/db50ec51-99cf-4972-a435-50ea3701c78a
 - `cdk diff` compare deployed stack with current state
 - `cdk docs` open CDK documentation
 
+== Pulumi
+
+[source,java]
+----
+import com.pulumi.Pulumi;
+import com.pulumi.aws.s3.Bucket;
+
+public class App {
+    public static void main(String[] args) {
+        Pulumi.run(ctx -> {
+
+            // Create an AWS resource (S3 Bucket)
+            var bucket = new Bucket("my-bucket");
+
+            // Export the name of the bucket
+            ctx.export("bucketName", bucket.getId());
+        });
+    }
+}
+----
+
+Source: https://www.pulumi.com/docs/get-started/aws/review-project/
+
 == Links
 
 - https://docs.aws.amazon.com/cdk/api/v2/java/index.html
