@@ -20,4 +20,5 @@ public class HelloResource {
     public String hello() {
         return message;
     }
+    
 }
