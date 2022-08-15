@@ -6,9 +6,9 @@ declare -a PROJECTS=(
     "aws-cdk-demo-simple-lambda"
     "aws-cdk-demo-hello-world-http"
     "aws-cdk-demo-hello-world-rest"
-    "aws-cdk-demo-dynamodb-todo" 
-    "aws-cdk-demo-dynamodb-todo-jdk17" 
-    "aws-cdk-demo-dynamodb-todo-jdk17-alb"    
+    "aws-cdk-demo-dynamodb-todo"
+    "aws-cdk-demo-dynamodb-todo-jdk17"
+    "aws-cdk-demo-dynamodb-todo-jdk17-alb"
     )
 
 echo "Move to the folder aws-cdk-demo"

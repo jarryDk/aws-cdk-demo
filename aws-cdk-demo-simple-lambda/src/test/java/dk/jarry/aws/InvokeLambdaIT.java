@@ -4,18 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.InvocationType;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-import software.amazon.awssdk.core.SdkBytes;
 
 public class InvokeLambdaIT {
     LambdaClient client;
 
     @BeforeEach
     public void initClient() {
-        var credentials = DefaultCredentialsProvider.builder().build();
+        var credentials =  DefaultCredentialsProvider.builder().build();
+        // var credentials = ProfileCredentialsProvider.create("lambda_user1");
         this.client = LambdaClient.builder()
                        .credentialsProvider(credentials)
                        .build();
@@ -37,5 +39,6 @@ public class InvokeLambdaIT {
             assertNull(error);
             var value = response.payload().asUtf8String();
             System.out.println("Function executed. Response: " + value);
-    }    
+    }
+
 }

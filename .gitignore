@@ -31,3 +31,4 @@ hs_err_pid*
 cdk/cdk.out/*
 */cdk/cdk.out/*
 */cdk/target
+*/.vscode/settings.json

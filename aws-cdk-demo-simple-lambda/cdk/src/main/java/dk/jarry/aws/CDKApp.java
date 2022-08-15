@@ -14,10 +14,10 @@ public class CDKApp {
             Tags.of(app).add("project", "aws-cdk-demo");
             Tags.of(app).add("environment","demo");
             Tags.of(app).add("application", appName);
-                        
+
         var stackProps = StackProps.builder()
                         .build();
-        
+
         new LambdaStack(app, appName, stackProps);
         app.synth();
     }
