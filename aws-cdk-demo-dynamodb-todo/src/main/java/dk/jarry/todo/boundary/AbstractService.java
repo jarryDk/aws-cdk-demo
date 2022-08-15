@@ -1,5 +1,6 @@
 package dk.jarry.todo.boundary;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public abstract class AbstractService {
 	public final static String TODO_UUID_COL = "uuid";
 	public final static String TODO_SUBJECT_COL = "subject";
 	public final static String TODO_BODY_COL = "body";
+	public final static String TODO_TIMESTAMP_COL = "timestamp";
 
 	public String getTableName() {
 		return dynamoDbTableName;
@@ -36,13 +38,14 @@ public abstract class AbstractService {
 				.attributesToGet( //
 						TODO_UUID_COL, //
 						TODO_SUBJECT_COL, //
-						TODO_BODY_COL //
+						TODO_BODY_COL, //
+						TODO_TIMESTAMP_COL //
 				).build();
 	}
 
 	/**
 	 * Create
-	 * 
+	 *
 	 * @param toDo
 	 * @return
 	 */
@@ -52,6 +55,9 @@ public abstract class AbstractService {
 		item.put(TODO_UUID_COL, AttributeValue.builder().s(toDo.getUuid()).build());
 		item.put(TODO_SUBJECT_COL, AttributeValue.builder().s(toDo.getSubject()).build());
 		item.put(TODO_BODY_COL, AttributeValue.builder().s(toDo.getBody()).build());
+		item.put(TODO_TIMESTAMP_COL,
+			AttributeValue.builder().s(
+				toDo.getTimestamp().format(DateTimeFormatter.ISO_DATE_TIME)).build());
 
 		return PutItemRequest.builder() //
 				.tableName(getTableName()) //
@@ -61,7 +67,7 @@ public abstract class AbstractService {
 
 	/**
 	 * Read
-	 * 
+	 *
 	 * @param uuid
 	 * @return
 	 */
@@ -76,7 +82,8 @@ public abstract class AbstractService {
 				.attributesToGet( //
 						TODO_UUID_COL, //
 						TODO_SUBJECT_COL, //
-						TODO_BODY_COL //
+						TODO_BODY_COL, //
+						TODO_TIMESTAMP_COL //
 				).build();
 	}
 
