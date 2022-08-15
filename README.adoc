@@ -91,7 +91,7 @@ public String onEvent(Map<String, String> event) {
 .Create the application
 
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:2.11.2.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
@@ -158,7 +158,7 @@ Expected output : `Hello World - Quarkus as AWS Lambda`
 .Create the application
 
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:2.11.1.Final:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:2.11.2.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
