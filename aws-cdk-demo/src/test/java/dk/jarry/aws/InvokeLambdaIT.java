@@ -11,31 +11,31 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.SdkBytes;
 
 public class InvokeLambdaIT {
-    LambdaClient client;
+        LambdaClient client;
 
-    @BeforeEach
-    public void initClient() {
-        var credentials = DefaultCredentialsProvider.builder().build();
-        this.client = LambdaClient.builder()
-                       .credentialsProvider(credentials)
-                       .build();
-    }
+        @BeforeEach
+        public void initClient() {
+                var credentials = DefaultCredentialsProvider.builder().build();
+                this.client = LambdaClient.builder()
+                                .credentialsProvider(credentials)
+                                .build();
+        }
 
-    @Test
-    public void invokeLambdaAsynchronously() {
-            String json = "{\"user\":\"duke\"}";
-            SdkBytes payload = SdkBytes.fromUtf8String(json);
+        @Test
+        public void invokeLambdaAsynchronously() {
+                String json = "{\"user\":\"duke\"}";
+                SdkBytes payload = SdkBytes.fromUtf8String(json);
 
-            InvokeRequest request = InvokeRequest.builder()
-                    .functionName("dk_jarry_aws_lambda_greetings_boundary_Greetings")
-                    .payload(payload)
-                    .invocationType(InvocationType.REQUEST_RESPONSE)
-                    .build();
+                InvokeRequest request = InvokeRequest.builder()
+                                .functionName("dk_jarry_aws_lambda_greetings_boundary_Greetings")
+                                .payload(payload)
+                                .invocationType(InvocationType.REQUEST_RESPONSE)
+                                .build();
 
-            var response = this.client.invoke(request);
-            var error = response.functionError();
-            assertNull(error);
-            var value = response.payload().asUtf8String();
-            System.out.println("Function executed. Response: " + value);
-    }    
+                var response = this.client.invoke(request);
+                var error = response.functionError();
+                assertNull(error);
+                var value = response.payload().asUtf8String();
+                System.out.println("Function executed. Response: " + value);
+        }
 }

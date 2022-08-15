@@ -30,6 +30,8 @@ import software.constructs.Construct;
 
 public class CDKStack extends Stack {
 
+	private static final String ENVIRONMENT = "demo";
+
 	static Map<String, String> configuration = Map.of("message", "hello,duke");
 	static String functionName = "dk_jarry_aws_lambda";
 	static String lambdaHandler = "dk.jarry.aws.lambda.greetings.boundary.Greetings::onEvent";
@@ -39,13 +41,13 @@ public class CDKStack extends Stack {
 
 	/**
 	 * <code>
-	 * Creates 
-	 * - DynamoDb table 'aws-cdk-demo-todos' 
+	 * Creates
+	 * - DynamoDb table 'aws-cdk-demo-todos
 	 * - Role 'aws-cdk-demo-todo-role'
-	 * - Bucket 'aws-cdk-demo-lamda-layers' 
+	 * - Bucket 'aws-cdk-demo-lamda-layers'
 	 * - Lambda layer 'aws-cdk-demo-java17layer'
 	 * </code>
-	 * 
+	 *
 	 * @param scope
 	 * @param id
 	 * @param props
@@ -54,22 +56,22 @@ public class CDKStack extends Stack {
 		super(scope, id, props);
 
 		CfnTable table = createCfnTable(id);
-		Tags.of(table).add("environment", "demo");
+		Tags.of(table).add("environment", ENVIRONMENT);
 
 		IRole lambdaRole = createRole(id);
-		Tags.of(lambdaRole).add("environment", "demo");
+		Tags.of(lambdaRole).add("environment", ENVIRONMENT);
 
 		var createBucketDeployment = createCfnBucket();
-		Tags.of(createBucketDeployment).add("environment", "demo");
+		Tags.of(createBucketDeployment).add("environment", ENVIRONMENT);
 
 		/**
-		 * We only like to do the layer deployment if we have java17layer.zip in the 
+		 * We only like to do the layer deployment if we have java17layer.zip in the
 		 * bucket aws-cdk-demo-lamda-layers
 		 */
 		boolean doLayerDeployment = Boolean.parseBoolean(System.getenv("DO_LAYER_DEPLOYMENT"));
 		if (doLayerDeployment) {
 			CfnLayerVersion cfnLayerVersion = createCfnLayerVersion();
-			Tags.of(cfnLayerVersion).add("environment", "demo");
+			Tags.of(cfnLayerVersion).add("environment", ENVIRONMENT);
 		}
 
 		IFunction function = createFunction(functionName, lambdaHandler, configuration, memory, maxConcurrency, timeout,
@@ -159,10 +161,11 @@ public class CDKStack extends Stack {
 	CfnLayerVersion createCfnLayerVersion() {
 
 		return CfnLayerVersion.Builder //
-				.create(this, "Java17CfnLayerVersion").content(ContentProperty.builder() //
-						.s3Bucket("aws-cdk-demo-lamda-layers") //
-						.s3Key("java17layer.zip") //
-						.build())
+				.create(this, "Java17CfnLayerVersion")
+				.content(ContentProperty.builder() //
+					.s3Bucket("aws-cdk-demo-lamda-layers") //
+					.s3Key("java17layer.zip") //
+					.build())
 				.description("Java 17 for aws-cdk-demo") //
 				.layerName("aws-cdk-demo-java17layer") //
 				.licenseInfo("https://www.apache.org/licenses/LICENSE-2.0.txt") //

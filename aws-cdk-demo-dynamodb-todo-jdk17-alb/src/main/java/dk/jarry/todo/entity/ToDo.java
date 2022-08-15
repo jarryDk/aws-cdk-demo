@@ -16,7 +16,7 @@ public class ToDo {
 	@Schema(readOnly = true)
 	public String uuid;
 	public String subject;
-	public String body;
+	public String body;	
 
 	public ToDo() {
 		this.uuid = UUID.randomUUID().toString();

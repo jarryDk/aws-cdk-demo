@@ -15,14 +15,14 @@ import javax.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path("todos")
-@RegisterRestClient(configKey="extensions-api")
+@RegisterRestClient(configKey = "extensions-api")
 public interface ToDoResourceClient {
-    
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    JsonObject create(JsonObject toDo);
-    
-    @GET
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	JsonObject create(JsonObject toDo);
+
+	@GET
 	@Path("{uuid}")
 	JsonObject read(@PathParam("uuid") String uuid);
 
@@ -31,11 +31,11 @@ public interface ToDoResourceClient {
 	JsonObject update(@PathParam("uuid") String uuid, JsonObject toDo);
 
 	@DELETE
-	@Path("{uuid}")	
+	@Path("{uuid}")
 	public void delete(@PathParam("uuid") String uuid);
 
 	@GET
 	public JsonArray list( //
-		@QueryParam("from") Integer from, //
-		@QueryParam("limit") Integer limit) ;
+			@QueryParam("from") Integer from, //
+			@QueryParam("limit") Integer limit);
 }

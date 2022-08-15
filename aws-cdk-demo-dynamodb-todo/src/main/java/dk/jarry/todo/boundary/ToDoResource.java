@@ -53,7 +53,7 @@ public class ToDoResource {
 	@Path("{uuid}")
 	@Operation(description = "Get a specific todo by uuid")
 	public ToDo read(@PathParam("uuid") String uuid) {
-		Optional<ToDo> read = toDoService.read(uuid);				
+		Optional<ToDo> read = toDoService.read(uuid);
 		return read.map(v -> {
 			return v;
 		}).orElseThrow(() -> new WebApplicationException( //

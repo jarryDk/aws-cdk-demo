@@ -129,16 +129,14 @@ public class CDKStack extends Stack {
 
 	ILayerVersion findOrCreateJava17Layer(String id) {
 
-		/*
 		String account = this.getAccount();
-		String layerVersionArn = "arn:aws:lambda:eu-central-1:" + account + ":layer:aws-cdk-demo-java17layer:3";
+		String layerVersionArn = "arn:aws:lambda:eu-central-1:" + account + ":layer:aws-cdk-demo-java17layer:6";
 		ILayerVersion fromLayerVersionArn = LayerVersion.fromLayerVersionArn(this, "aws-cdk-demo-java17layer",
 				layerVersionArn);
 		if (fromLayerVersionArn != null) {
 			return fromLayerVersionArn;
 		}
-		*/
-		
+
 		LayerVersion java17layer = new LayerVersion(this, "Java17Layer", LayerVersionProps.builder() //
 				.layerVersionName(id + "-java17-layer") //
 				.description("Java 17") //
@@ -147,7 +145,7 @@ public class CDKStack extends Stack {
 				.build());
 		return java17layer;
 	}
-	
+
 	Function createFunction(Map<String, String> configuration, IRole lambdaRole, List<ILayerVersion> java17layer) {
 
 		return Function.Builder.create(this, FUNCTION_NAME) //

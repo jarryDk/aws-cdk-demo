@@ -42,7 +42,7 @@ public abstract class AbstractService {
 
 	/**
 	 * Create
-	 * 
+	 *
 	 * @param toDo
 	 * @return
 	 */
@@ -61,7 +61,7 @@ public abstract class AbstractService {
 
 	/**
 	 * Read
-	 * 
+	 *
 	 * @param uuid
 	 * @return
 	 */

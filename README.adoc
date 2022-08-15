@@ -63,6 +63,7 @@ image::images/cdk.png[][CDK]
 == aws-cdk-demo-simple-lambda
 
 - Show the lambda funtion
+- Show lambda handler
 - Show the CKD code (including cdk.json)
 - Show `cdk diff` after change to function
 - Do live deployment to AWS
@@ -80,6 +81,12 @@ public String onEvent(Map<String, String> event) {
        .map(e -> e.getKey() + "->" + e.getValue())
        .collect(Collectors.joining(","));
 }
+----
+
+.Lambda handler
+[source,java]
+----
+static String lambdaHandler = "dk.jarry.aws.lambda.greetings.boundary.Greetings::onEvent";
 ----
 
 .Build and deploy funtion with AWS CDK
@@ -126,6 +133,7 @@ cd ~/git/jarrydk/aws-cdk-demo/aws-cdk-demo-simple-lambda && code -n .
 - Show the Quarkus app with MicroProfile
 - Show how to test the app on localhost
 - Show the CKD code (http)
+- Show lambda handler
 
 [sourch,bash]
 
@@ -168,29 +176,24 @@ public class HelloResource {
 }
 ----
 
-
 .Local demo
 
 http://localhost:8080/hello
 
 Expected output : `hello, quarkus on localhost`
 
-.Add the endpoint via CDK
-
-[source,java]
-----
-var functionUrl = function.addFunctionUrl(
-    FunctionUrlOptions
-        .builder()
-        .authType(FunctionUrlAuthType.NONE)
-        .build());
-----
-
 .AWS demo
 
 http://<HOST_NAME>/hello
 
 Expected output : `Hello World - Quarkus as AWS Lambda`
+
+.Lambda handler
+[source,java]
+----
+static String lambdaHandler = "io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest";
+----
+
 
 .Code pick
 [source,bash]
@@ -373,7 +376,7 @@ cd ~/git/jarrydk/aws-cdk-demo/aws-cdk-demo-dynamodb-todo-jdk17 && code -n .
 == aws-cdk-demo-dynamodb-todo-jdk17-alb
 
 - Show how to setup ApplicationLoadBalancer
-- Manual enable `enable-multi-value-header`
+- Manual enable `https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html#enable-multi-value-headers[enable-multi-value-header]` 
 
 .Code pick
 [source,bash]
