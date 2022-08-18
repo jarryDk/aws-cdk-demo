@@ -12,10 +12,11 @@ import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.Tags;
-import software.amazon.awscdk.services.dynamodb.CfnTable;
-import software.amazon.awscdk.services.dynamodb.CfnTable.AttributeDefinitionProperty;
-import software.amazon.awscdk.services.dynamodb.CfnTable.KeySchemaProperty;
-import software.amazon.awscdk.services.dynamodb.CfnTable.ProvisionedThroughputProperty;
+import software.amazon.awscdk.services.dynamodb.Attribute;
+import software.amazon.awscdk.services.dynamodb.AttributeType;
+import software.amazon.awscdk.services.dynamodb.BillingMode;
+import software.amazon.awscdk.services.dynamodb.ITable;
+import software.amazon.awscdk.services.dynamodb.Table;
 import software.amazon.awscdk.services.ec2.Vpc;
 import software.amazon.awscdk.services.elasticloadbalancingv2.AddApplicationTargetsProps;
 import software.amazon.awscdk.services.elasticloadbalancingv2.ApplicationListener;
@@ -34,11 +35,6 @@ import software.amazon.awscdk.services.lambda.LayerVersion;
 import software.amazon.awscdk.services.lambda.LayerVersionProps;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.constructs.Construct;
-import software.amazon.awscdk.services.dynamodb.BillingMode;
-import software.amazon.awscdk.services.dynamodb.ITable;
-import software.amazon.awscdk.services.dynamodb.Table;
-import software.amazon.awscdk.services.dynamodb.Attribute;
-import software.amazon.awscdk.services.dynamodb.AttributeType;
 
 public class CDKStack extends Stack {
 
@@ -82,6 +78,8 @@ public class CDKStack extends Stack {
 						.targets(List.of(lambdaTarget)) //
 						.healthCheck(HealthCheck.builder() //
 								.enabled(true) //
+								.interval(Duration.seconds(42)) // https://www.dictionary.com/e/slang/42/
+								.path("/q/health") //
 								.build()) //
 						.build());
 
@@ -196,7 +194,7 @@ public class CDKStack extends Stack {
 
 		return applicationLoadBalancer;
 	}
-	
+
 	Function createFunction(Map<String, String> configuration, IRole lambdaRole, List<ILayerVersion> java17layer) {
 
 		return Function.Builder.create(this, FUNCTION_NAME) //
