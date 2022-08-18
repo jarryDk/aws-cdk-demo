@@ -53,12 +53,22 @@ The AWS CDK has first-class support for TypeScript, JavaScript, Python, Java, C#
 
 image::images/cdk.png[][CDK]
 
+.CDK bootstrapping
+
+Deploying stacks with the AWS CDK requires dedicated Amazon S3 buckets and other containers to be available to AWS CloudFormation during deployment. Creating these is called https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html[bootstrapping].
+
+[source,bash]
+----
+cdk bootstrap --profile lambda_user
+----
+
 .Links
 
 - https://docs.aws.amazon.com/cdk/v2/guide/apps.html#lifecycle[Apps -> App lifecycle]
 - https://aws.amazon.com/cdk/[AWS Cloud Development Kit]
 - https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html[Getting started with the AWS CDK]
 - https://docs.aws.amazon.com/cdk/v2/guide/work-with-cdk-java.html[Working with the AWS CDK in Java]
+- https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html[CDK Bootstrapping]
 
 == aws-cdk-demo-simple-lambda
 
@@ -424,11 +434,32 @@ curl http://localhost:8080/todos/db50ec51-99cf-4972-a435-50ea3701c78a
 
 == CDK commands
 
+- `cdk bootstrap` deploy AWS CDK into AWS into environment
 - `cdk ls` list all stacks in the app
 - `cdk synth` emits the synthesized CloudFormation template
 - `cdk deploy` deploy this stack to your default AWS account/region
 - `cdk diff` compare deployed stack with current state
 - `cdk docs` open CDK documentation
+
+== AWS Profiles
+
+.credentials in ~/.aws
+----
+[default]
+aws_access_key_id = Tm90IGEgSm9rZSEh
+aws_secret_access_key = QXJlIHlvdSBraWRkaW5nIG1l
+
+[lambda_user]
+aws_access_key_id = Tm90IGEgSm9rZSEh
+aws_secret_access_key = QXJlIHlvdSBraWRkaW5nIG1l
+----
+
+.config in ~/.aws
+----
+[default]
+region = eu-central-1
+output = json
+----
 
 == Pulumi
 
