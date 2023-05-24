@@ -10,10 +10,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.BeforeAll;
@@ -135,7 +135,7 @@ public class ToDoResourceTest {
 
         try {
             todoOutput = this.resourceClient.read(uuid);
-        } catch (javax.ws.rs.WebApplicationException we) {
+        } catch (jakarta.ws.rs.WebApplicationException we) {
             assertTrue(we.getResponse().getStatus() == 404);
         }
 

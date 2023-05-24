@@ -1,5 +1,6 @@
 = AWS CDK demo
 
+
 .Project introduction
 ****
 This project is created to demonstrate how-to deploy to AWS using IaC (Java and CDK).
@@ -14,6 +15,12 @@ As we expect our application to really take of we add an ApplicationLoadBalancer
 
 All code in this demo will be in Java - IaC and the application.
 ****
+
+== Prerequisites
+
+- https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html[AWS CLI install and update instructions]
+- https://docs.aws.amazon.com/cdk/v2/guide/cli.html[AWS CDK Toolkit (cdk command)]
+
 
 == Demo steeps
 
@@ -117,7 +124,7 @@ cd cdk && mvn clean package && cdk deploy $PROFILE
 ----
 Stack aws-lambda-cdk-plain
 Resources
-[~] AWS::Lambda::Function dk_jarry_aws_lambda_greetings_boundary_Greetings dkjarryawslambdagreetingsboundaryGreetingsDCA7FDA8 
+[~] AWS::Lambda::Function dk_jarry_aws_lambda_greetings_boundary_Greetings dkjarryawslambdagreetingsboundaryGreetingsDCA7FDA8
  ├─ [~] Code
  │   └─ [~] .S3Key:
  │       ├─ [-] 4efad5ac647d6e70d8b21628811edfdb86f9042902d462bcb70ccd8bf4c1ab98.jar
@@ -150,7 +157,7 @@ cd ~/git/jarrydk/aws-cdk-demo/aws-cdk-demo-simple-lambda && code -n .
 .Create the application
 
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:2.11.2.Final:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:3.0.3.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \
@@ -218,7 +225,7 @@ cd ~/git/jarrydk/aws-cdk-demo/aws-cdk-demo-hello-world-http && code -n .
 .Create the application
 
 ----
-mvn io.quarkus.platform:quarkus-maven-plugin:2.11.2.Final:create \
+mvn io.quarkus.platform:quarkus-maven-plugin:3.0.3.Final:create \
     -DprojectGroupId=dk.jarry.aws \
     -DprojectArtifactId=aws-cdk-demo-hello-world-http \
     -DclassName="dk.jarry.aws.HelloResource" \

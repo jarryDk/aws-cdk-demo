@@ -3,8 +3,8 @@ package dk.jarry.aws.dynamodb.todo.boundary;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import dk.jarry.aws.dynamodb.todo.entity.ToDo;
 import io.smallrye.mutiny.Uni;
