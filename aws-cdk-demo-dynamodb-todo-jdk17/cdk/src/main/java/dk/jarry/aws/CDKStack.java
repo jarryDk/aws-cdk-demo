@@ -130,7 +130,7 @@ public class CDKStack extends Stack {
 	ILayerVersion findOrCreateJava17Layer(String id) {
 
 		String account = this.getAccount();
-		String layerVersionArn = "arn:aws:lambda:eu-central-1:" + account + ":layer:aws-cdk-demo-java17layer:6";
+		String layerVersionArn = "arn:aws:lambda:eu-central-1:" + account + ":layer:aws-cdk-demo-java17layer:7";
 		ILayerVersion fromLayerVersionArn = LayerVersion.fromLayerVersionArn(this, "aws-cdk-demo-java17layer",
 				layerVersionArn);
 		if (fromLayerVersionArn != null) {
